@@ -1,0 +1,18 @@
+apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  local:
+    push: false # don't push it to docker-hub repository
+  artifacts:
+    - image: rajjejosefsson/multi-client
+      context: client
+      docker:
+        dockerfile: Dockerfile.dev
+      sync: # mode 2 - if none of those it will recreate the whole thing
+        '**/*.js': .,
+        '**/*.css': .,
+        '**/*.html': .,
+deploy:
+  kubectl:
+    manifests:
+      - k8s/client-deployments.yaml
