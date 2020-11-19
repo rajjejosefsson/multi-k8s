@@ -15,8 +15,8 @@ before_install:
   - gcloud auth activate-service-account --key-file service-account.json # AWS have IAM which is more or less equivalent to activate-service-account
   # those three below also should also  be called in google cloud terminal first time a cluster is created
   - gcloud config set project multi-k8s-296113 # we should
-  - gcloud config set compute/zone europe-west1-b # same as in kubernets engine and cluster
-  - gcloud container clusters get-credentials multi-k8s-cluster # operate on this cluster
+  - gcloud config set compute/zone europe-west4-a # same as in kubernets engine and cluster
+  - gcloud container clusters get-credentials multi-cluster # operate on this cluster
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker build -t rajjejosefsson/react-test -f ./client/Dockerfile.dev ./client
