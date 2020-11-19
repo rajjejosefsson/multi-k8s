@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1 # keep to one!!, we don't wanna write to a single db from multiple pods without knowing about each other, we will use PVC
+  selector:
+    matchLabels:
+      component: postgres
+  template:
+    metadata:
+      labels:
+        component: postgres
+    spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim # map to the database-persistent-volume-claim.yaml
+      containers:
+        - name: postgres
+          image: postgres # public image in docker hub
+          ports:
+            - containerPort: 5432
+          volumeMounts: # hi we just get access to the storage, and this is how it will be used within the container
+            - name: postgres-storage # same as volume name!!
+              mountPath: /var/lib/postgresql/data # where data get stored in postgres
+              subPath: postgres # specific for postgres - subfolder
+          env:
+            - name: POSTGRES_PASSWORD # password into the postgres container (expect this name)
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword # the name of our password we created with kubectl
+                  key: PGPASSWORD  # name of the key (can exist multiple key=value)
+

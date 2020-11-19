@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: PersistentVolumeClaim # IS NOT AN ACTUAL STORAGE, ITS LIKE AN ADVERTISEMENT, and we want to get a storage from the ADVERTISEMENT, if we attach this Claim to a pod, Kubernetes must find an instance of storage
+metadata:
+  name: database-persistent-volume-claim
+spec:
+  accessModes: # ReadWriteOnce - can be used by a single node, ReadOnlyMany - multiple nodes can read from, ReadWriteMany - can be read and written to by many nodes
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi # have to be exact 2GB (Gi)

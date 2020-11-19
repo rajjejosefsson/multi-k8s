@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: web # what we have client-deployment.yaml as label in template
+  ports:
+    - port: 3000 # the port for other Pods that needs multi-client pod
+      targetPort: 3000 # the port client-deployment need for our app

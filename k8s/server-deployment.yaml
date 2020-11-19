@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      containers:
+        - name: server
+          image: rajjejosefsson/multi-server # expect env variables :O, later
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service
+            - name: REDIS_PORT
+              value: "6379"
+            - name: PGUSER
+              value: postgres # not the best but ok for our demo
+            - name: PGHOST
+              value: postgres-cluster-ip-service # the name of the Cluster IP Service
+            - name: PGPORT
+              value: "5432"
+            - name: PGDATABASE
+              value: postgres  # not the best but ok for our demo
+            - name: PGPASSWORD # our server will expect this name
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword # the name of our password we created with kubectl
+                  key: PGPASSWORD # name of the key (can exist multiple key=value) not same as above name!!
+
+
