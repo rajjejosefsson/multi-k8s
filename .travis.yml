@@ -1,0 +1,27 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - openssl aes-256-cbc -K $encrypted_9f3b5599b056_key -iv $encrypted_9f3b5599b056_iv -in service-account.json.enc -out service-account.json -d # for google cloud
+  - curl https://sdk.cloud.google.com | bash > /dev/null; # install gcloud it locally to travis
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud components update kubectl
+  - gcloud auth activate-service-account --key-file service-account.json # AWS have IAM which is more or less equivalent to activate-service-account
+
+  # Create a Service Account in Google Cloud,
+  # Download service account credentials in a json file, encrypt json file into travis, with travis CLI,
+  # unecrypt onto google cloud
+
+  # Click Service Account
+  # call it travis-deployer
+  # Kubernetes Engine Admin Role
+  # Create
+  # Add new key, (as json)
+
+  # inside current directory with this json (complex folder)
+  # docker run -it $(pwd):/app ruby:2.3 sh
+  # gem install travis --no-rdoc --no-ri
+  # gem install travis
+  # travis login
+  # copy json into volumed directory so we can use it inside container
+  # travis encrypt-file service-account.json -r rajjejosefsson/multi-k8s # my travis repo
