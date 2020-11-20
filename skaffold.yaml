@@ -16,6 +16,24 @@ build:
             dest: '.'
           - src: '**/*.html'
             dest: '.'
+
+    - image: rajjejosefsson/multi-server
+      context: server
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: '**/*.js'
+            dest: '.'
+
+    - image: rajjejosefsson/multi-worker
+      context: server
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: '**/*.js'
+            dest: '.'
 deploy:
   kubectl:
     manifests:
@@ -25,6 +43,9 @@ deploy:
       - ./k8s/client-cluster-ip-service.yaml
       - ./k8s/server-cluster-ip-service.yaml
 portForward:
-- resourceType: deployment
-  resourceName: client-deployment
-  port: 3000
+  - resourceType: deployment
+    resourceName: client-deployment
+    port: 3000
+  - resourceType: deployment
+    resourceName: server-deployment
+    port: 5000

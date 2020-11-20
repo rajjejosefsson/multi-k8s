@@ -8,16 +8,16 @@ kubectl apply -f k8s
 
 ## Local Development
 
-for `localhost:3000`
-
-```sh
-skaffold dev --port-forward
-```
-
 for minikube (cluster) ip
 
 ```sh
 skaffold dev
+```
+
+for `localhost:3000` (server not working)
+
+```sh
+skaffold dev --port-forward
 ```
 
 ### Docker Push Manually
