@@ -11,6 +11,7 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_9f3b5599b056_key -iv $encrypted_9f3b5599b056_iv -in service-account.json.enc -out service-account.json -d # for google cloud
   - curl https://sdk.cloud.google.com | bash > /dev/null; # install gcloud it locally to travis
   - source $HOME/google-cloud-sdk/path.bash.inc
+
   - gcloud components update kubectl
   - gcloud auth activate-service-account --key-file service-account.json # AWS have IAM which is more or less equivalent to activate-service-account
   # those three below also should also  be called in google cloud terminal first time a cluster is created
